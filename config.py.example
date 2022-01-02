@@ -1,0 +1,25 @@
+mqtt_ip = "192.168.1.226"
+mqtt_port = "1883"
+# threshold value by which we identify differences in the delta frame
+delta_threshold = 5
+# Minimum percentage of the screen width or height that we need to find contour motion
+# in order to trigger detection. Decrease to identify more events as motion or to identify
+# things that are farther away.  Increase to require more of the overall image to be within
+# the frame or closer to identify motion.
+# value is greater than 0 and less than 1
+contour_size_cutoff_percentage = 0.1
+
+cameras = [
+    {
+    "name": "inside",
+    "url": "rtsp://admin:secret@192.168.1.111:554/cam/realmonitor?channel=1&subtype=1"
+    },
+    {
+    "name": "frontdoor",
+    "url": "rtsp://admin:secret@192.168.1.110:554/cam/realmonitor?channel=1&subtype=1"
+    },
+    {
+    "name": "backdoor",
+    "url": "rtsp://admin:secret@192.168.1.112:554/cam/realmonitor?channel=1&subtype=1"
+    }
+]
