@@ -61,7 +61,7 @@ def runMultiprocessing(camera):
 
 				# cv2.RETR_EXTERNAL - retrieves only the extreme outer contours
 				cnts, _ = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-				send_mqtt = False
+				motion = False
 				for c in cnts:
 					x,y,w,h = cv2.boundingRect(c)
 					# if it doesn't hit our size cutoff, skip it
@@ -69,8 +69,8 @@ def runMultiprocessing(camera):
 						continue
 					# BGR - blue, green, red
 					cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 2)
-					send_mqtt = True
-				if send_mqtt:
+					motion = True
+				if motion:
 					logging.info("Motion detected")
 					# http://www.steves-internet-guide.com/understanding-mqtt-qos-levels-part-1/
 					# http://www.steves-internet-guide.com/understanding-mqtt-qos-2/
@@ -78,6 +78,10 @@ def runMultiprocessing(camera):
 					# QOS 1 - At Least Once (guaranteed)
 					# QOS 2 - Only Once (guaranteed)
 					mqttclient.publish("docker-movement-detection/"+camera['name'], payload=cv2.imencode('.png', frame)[1].tobytes(), qos=0)
+					# case sensitive? make sure to use "ON" not "on"
+					mqttclient.publish("docker-movement-detection/"+camera['name']+"/state", payload="ON", qos=0)
+				else:
+					mqttclient.publish("docker-movement-detection/"+camera['name']+"/state", payload="OFF", qos=0)
 			time_delta = (datetime.datetime.now() - start_time).total_seconds() * 1000 # milliseconds
 			if float(1000 / time_delta) < float(vs.get(cv2.CAP_PROP_FPS)) * 0.8:
 				logging.warning(f"Running at {1000 / time_delta} FPS, target is {vs.get(cv2.CAP_PROP_FPS)} FPS")
