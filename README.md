@@ -14,7 +14,7 @@ Copy `config.py.example` to `config.py` and edit
 ## Building
 
 ```shell
-docker build . -t ghcr.io/firefly2442/docker-movement-detection:latest
+docker build . --pull -t ghcr.io/firefly2442/docker-movement-detection:latest --progress=plain
 ```
 
 ## Running
@@ -26,3 +26,13 @@ docker run -d --restart unless-stopped --name=docker-movement-detection ghcr.io/
 ## Local Development and Testing
 
 Run `main.py`
+
+Or shell straight into the running Docker container
+
+```shell
+docker exec -it <id> /bin/bash
+```
+
+## References
+
+* [Motion](https://github.com/Motion-Project/motion) - an alternative motion detection system
