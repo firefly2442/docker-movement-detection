@@ -72,7 +72,12 @@ def runMultiprocessing(camera):
 					send_mqtt = True
 				if send_mqtt:
 					logging.info("Motion detected")
-					mqttclient.publish("home-assistant/zoneminder/yolo/", "{\"label\": \"\", \"img_path\": \"\", \"timestamp\": \"\"}")
+					# http://www.steves-internet-guide.com/understanding-mqtt-qos-levels-part-1/
+					# http://www.steves-internet-guide.com/understanding-mqtt-qos-2/
+					# QOS 0 - Once (not guaranteed)
+					# QOS 1 - At Least Once (guaranteed)
+					# QOS 2 - Only Once (guaranteed)
+					mqttclient.publish("docker-movement-detection/"+camera['name'], payload=cv2.imencode('.png', frame)[1].tobytes(), qos=0)
 			time_delta = (datetime.datetime.now() - start_time).total_seconds() * 1000 # milliseconds
 			if float(1000 / time_delta) < float(vs.get(cv2.CAP_PROP_FPS)) * 0.8:
 				logging.warning(f"Running at {1000 / time_delta} FPS, target is {vs.get(cv2.CAP_PROP_FPS)} FPS")
