@@ -6,6 +6,7 @@ OpenCV and Python and sends detection events to an MQTT topic.
 ## Requirements
 
 * Docker
+* docker-compose
 
 ## Configuration
 
