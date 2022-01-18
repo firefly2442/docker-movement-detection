@@ -1,0 +1,11 @@
+version: '3.4'
+services:
+
+  docker-movement-detection:
+    build:
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: docker-movement-detection
+    hostname: docker-movement-detection
+    environment:
+      TZ: "America/Denver"
