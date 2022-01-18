@@ -14,13 +14,13 @@ Copy `config.py.example` to `config.py` and edit
 ## Building
 
 ```shell
-docker build . --pull -t ghcr.io/firefly2442/docker-movement-detection:latest --progress=plain
+docker compose build --pull
 ```
 
 ## Running
 
 ```shell
-docker run -d --restart unless-stopped --name=docker-movement-detection ghcr.io/firefly2442/docker-movement-detection:latest
+docker compose up -d
 ```
 
 ## Local Development and Testing
@@ -31,6 +31,12 @@ Or shell straight into the running Docker container
 
 ```shell
 docker exec -it <id> /bin/bash
+```
+
+## Teardown
+
+```shell
+docker compose down -v
 ```
 
 ## References

@@ -27,15 +27,18 @@ def runMultiprocessing(camera):
 			vs = cv2.VideoCapture(camera['url'])
 			fps = float(vs.get(cv2.CAP_PROP_FPS))
 		
-		logging.info(f"{vs.get(cv2.CAP_PROP_FRAME_WIDTH)} x {vs.get(cv2.CAP_PROP_FRAME_HEIGHT)}")
+		logging.info(f"Resolution: {vs.get(cv2.CAP_PROP_FRAME_WIDTH)} x {vs.get(cv2.CAP_PROP_FRAME_HEIGHT)}")
 		logging.info(f"{fps} FPS")
 
 		# mqtt setup
 		mqttclient = paho.Client()
 		mqttclient.connect(str(config.mqtt_ip), int(config.mqtt_port))
+	except Exception as e:
+		logging.error(e)
 
-		# loop over the frames of the video
-		while True:
+	# loop over the frames of the video
+	while True:
+		try:
 			start_time = datetime.datetime.now()
 			# returns a tuple, first element is a bool
 			_, frame = vs.read()
@@ -68,7 +71,7 @@ def runMultiprocessing(camera):
 					if w < vs.get(cv2.CAP_PROP_FRAME_WIDTH)*config.contour_size_cutoff_percentage or h < vs.get(cv2.CAP_PROP_FRAME_HEIGHT)*config.contour_size_cutoff_percentage:
 						continue
 					# BGR - blue, green, red
-					cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 2)
+					cv2.rectangle(frame, (x,y), (x+w,y+h), (0,0,255), 1)
 					motion = True
 				if motion:
 					logging.info("Motion detected")
@@ -86,12 +89,12 @@ def runMultiprocessing(camera):
 			if float(1000 / time_delta) < float(vs.get(cv2.CAP_PROP_FPS)) * 0.8:
 				logging.warning(f"Running at {1000 / time_delta} FPS, target is {vs.get(cv2.CAP_PROP_FPS)} FPS")
 				logging.warning("Not hitting the target FPS, consider reducing camera FPS or improving hardware.")
-	except Exception as e:
-		logging.error(e)
-		time.sleep(1) # one second
+		except Exception as e:
+			logging.error(e)
+			time.sleep(1) # one second
 
 
 if __name__ == '__main__':
-  for camera in config.cameras:
-    p = multiprocessing.Process(target=runMultiprocessing, args=(camera,))
-    p.start()
+	for camera in config.cameras:
+		p = multiprocessing.Process(target=runMultiprocessing, args=(camera,))
+		p.start()

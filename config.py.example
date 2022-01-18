@@ -7,7 +7,7 @@ delta_threshold = 5
 # things that are farther away.  Increase to require more of the overall image to be within
 # the frame or closer to identify motion.
 # value is greater than 0 and less than 1
-contour_size_cutoff_percentage = 0.1
+contour_size_cutoff_percentage = 0.15
 
 cameras = [
     {
