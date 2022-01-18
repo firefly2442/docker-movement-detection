@@ -3,6 +3,8 @@
 Performs motion/movement detection on RTSP video streams using
 OpenCV and Python and sends detection events to an MQTT topic.
 
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/firefly2442/docker-movement-detection.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/firefly2442/docker-movement-detection/alerts/)
+
 ## Requirements
 
 * Docker

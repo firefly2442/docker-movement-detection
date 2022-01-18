@@ -1,6 +1,5 @@
-import os, sys, datetime, time, cv2, multiprocessing
+import datetime, time, cv2, multiprocessing
 import logging as log
-import logging.handlers as handlers
 import paho.mqtt.client as paho
 import config # config.py
 
