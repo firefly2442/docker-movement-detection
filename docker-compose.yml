@@ -8,4 +8,4 @@ services:
     container_name: docker-movement-detection
     hostname: docker-movement-detection
     environment:
-      TZ: "America/Denver"
+      TZ: "America/Chicago"
